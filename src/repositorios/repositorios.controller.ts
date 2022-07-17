@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { RepositoriosService } from './repositorios.service';
 import { CreateRepositorioDto } from './dto/create-repositorio.dto';
 import { UpdateRepositorioDto } from './dto/update-repositorio.dto';
@@ -23,7 +31,10 @@ export class RepositoriosController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRepositorioDto: UpdateRepositorioDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateRepositorioDto: UpdateRepositorioDto,
+  ) {
     return this.repositoriosService.update(+id, updateRepositorioDto);
   }
 
