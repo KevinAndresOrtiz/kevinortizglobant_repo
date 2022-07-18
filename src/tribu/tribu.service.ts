@@ -28,12 +28,18 @@ export class TribuService {
     }
   }
 
-  findAll() {
-    return `This action returns all tribu`;
+  findAll(): Promise<Tribu[]> {
+    return this.tribuRespository.find({
+      relations: ['organizacion', 'repositorio'],
+    });
   }
 
   findOne(name: string): Promise<Tribu> {
     return this.tribuRespository.findOneBy({ name });
+  }
+
+  findById(id_tribe: number): Promise<Tribu> {
+    return this.tribuRespository.findOneBy({ id_tribe });
   }
 
   async update(name: string, updateTribuDto: UpdateTribuDto): Promise<Tribu> {

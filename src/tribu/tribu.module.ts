@@ -9,5 +9,6 @@ import { Organizacion } from 'src/organizacion/entities/organizacion.entity';
   imports: [TypeOrmModule.forFeature([Tribu, Organizacion])],
   controllers: [TribuController],
   providers: [TribuService],
+  exports: [TribuService],
 })
 export class TribuModule {}

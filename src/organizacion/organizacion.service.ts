@@ -19,7 +19,9 @@ export class OrganizacionService {
   }
 
   findAll(): Promise<Organizacion[]> {
-    return this.organizacionRepository.find();
+    return this.organizacionRepository.find({
+      relations: ['tribus'],
+    });
   }
 
   findById(id_organizacion: number): Promise<Organizacion> {
@@ -27,7 +29,10 @@ export class OrganizacionService {
   }
 
   findOne(name: string): Promise<Organizacion> {
-    return this.organizacionRepository.findOneBy({ name });
+    return this.organizacionRepository.findOne({
+      relations: ['tribus'],
+      where: { name },
+    });
   }
 
   async update(
