@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RepositoriosService } from 'src/repositorios/repositorios.service';
 import { Repository } from 'typeorm';
@@ -14,14 +14,18 @@ export class MetricasService {
     private readonly repositoryService: RepositoriosService,
   ) {}
   async create(createMetricaDto: CreateMetricaDto) {
-    const newMetric = this.metricaRepo.create(createMetricaDto);
-    if (createMetricaDto.repositorioId) {
-      const repositorio = await this.repositoryService.findById(
-        createMetricaDto.repositorioId,
-      );
-      newMetric.repositorio = repositorio;
+    try {
+      const newMetric = this.metricaRepo.create(createMetricaDto);
+      if (createMetricaDto.repositorioId) {
+        const repositorio = await this.repositoryService.findById(
+          createMetricaDto.repositorioId,
+        );
+        newMetric.repositorio = repositorio;
+      }
+      return this.metricaRepo.save(newMetric);
+    } catch (err) {
+      throw new BadRequestException(`${err.message}`);
     }
-    return this.metricaRepo.save(newMetric);
   }
 
   findAll(): Promise<Metrica[]> {

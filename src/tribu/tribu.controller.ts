@@ -30,6 +30,11 @@ export class TribuController {
     return tribus;
   }
 
+  @Get('id/:id')
+  findbyIDTribu(@Param('id') id: string) {
+    return this.tribuService.findByTribuID(+id);
+  }
+
   @Get(':name')
   findOne(@Param('name') name: string) {
     return this.tribuService.findOne(name);

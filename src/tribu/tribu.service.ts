@@ -52,6 +52,14 @@ export class TribuService {
   findById(id_tribe: number): Promise<Tribu> {
     return this.tribuRespository.findOneBy({ id_tribe });
   }
+  findByTribuID(id: number): Promise<Tribu[]> {
+    return this.tribuRespository.find({
+      where: {
+        id_tribe: id,
+      },
+      relations: ['organizacion', 'repositorios', 'repositorios.metrica'],
+    });
+  }
 
   async update(name: string, updateTribuDto: UpdateTribuDto): Promise<Tribu> {
     const tribu = await this.findOne(name);
