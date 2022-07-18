@@ -25,5 +25,5 @@ export class Tribu {
   @ManyToOne(() => Organizacion, (organizacion) => organizacion.tribus)
   organizacion: Organizacion;
   @OneToMany(() => Repositorio, (repositorio) => repositorio.tribu)
-  repositorios: Repositorio;
+  repositorios: Repositorio[];
 }

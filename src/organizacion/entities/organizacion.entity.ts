@@ -17,5 +17,5 @@ export class Organizacion {
   })
   status: number;
   @OneToMany(() => Tribu, (tribu) => tribu.organizacion)
-  tribus: Tribu;
+  tribus: Tribu[];
 }
