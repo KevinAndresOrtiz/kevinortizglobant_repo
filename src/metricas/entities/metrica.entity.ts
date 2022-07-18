@@ -36,7 +36,7 @@ export class Metrica {
     nullable: false,
   })
   code_smells: number;
-  @OneToOne(() => Repositorio)
+  @OneToOne(() => Repositorio, (repositorio) => repositorio.metrica)
   @JoinColumn()
   repositorio: Repositorio;
 }

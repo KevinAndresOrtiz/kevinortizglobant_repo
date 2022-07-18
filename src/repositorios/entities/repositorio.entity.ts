@@ -1,3 +1,4 @@
+import { Metrica } from 'src/metricas/entities/metrica.entity';
 import { Tribu } from 'src/tribu/entities/tribu.entity';
 import {
   Entity,
@@ -5,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
+  OneToOne,
 } from 'typeorm';
 
 export enum State {
@@ -46,4 +48,7 @@ export class Repositorio {
   create_time: Date;
   @ManyToOne(() => Tribu, (tribu) => tribu.repositorios)
   tribu: Tribu;
+
+  @OneToOne(() => Metrica, (metrica) => metrica.repositorio)
+  metrica: Metrica;
 }

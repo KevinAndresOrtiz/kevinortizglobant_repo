@@ -38,9 +38,13 @@ export class RepositoriosService {
     return this.repoRepository.findOneBy({ name });
   }
 
+  findById(id: number): Promise<Repositorio> {
+    return this.repoRepository.findOneBy({ id_repository: id });
+  }
+
   async update(name: string, updateRepositorioDto: UpdateRepositorioDto) {
     const repositorio = await this.findOne(name);
-    if (UpdateRepositorioDto.tribuId) {
+    if (updateRepositorioDto.tribuId) {
       const tribu = await this.tribuService.findById(
         updateRepositorioDto.tribuId,
       );
