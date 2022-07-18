@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { TribuService } from './tribu.service';
 import { CreateTribuDto } from './dto/create-tribu.dto';
@@ -21,8 +22,12 @@ export class TribuController {
   }
 
   @Get()
-  findAll() {
-    return this.tribuService.findAll();
+  async findAll() {
+    const tribus = await this.tribuService.findAll();
+    if (!tribus.length) {
+      throw new NotFoundException(' empty results to get all tribus');
+    }
+    return tribus;
   }
 
   @Get(':name')

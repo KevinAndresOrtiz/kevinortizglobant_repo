@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrganizacionService } from 'src/organizacion/organizacion.service';
 import { Repository } from 'typeorm';
@@ -29,13 +33,20 @@ export class TribuService {
   }
 
   findAll(): Promise<Tribu[]> {
-    return this.tribuRespository.find({
-      relations: ['organizacion', 'repositorio'],
-    });
+    try {
+      return this.tribuRespository.find({
+        relations: ['organizacion', 'repositorios'],
+      });
+    } catch (err) {
+      throw new NotFoundException(`${err.message}`);
+    }
   }
 
   findOne(name: string): Promise<Tribu> {
-    return this.tribuRespository.findOneBy({ name });
+    return this.tribuRespository.findOne({
+      relations: ['organizacion'],
+      where: { name },
+    });
   }
 
   findById(id_tribe: number): Promise<Tribu> {

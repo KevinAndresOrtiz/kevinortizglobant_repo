@@ -33,7 +33,7 @@ export class RepositoriosService {
 
   findAll(): Promise<Repositorio[]> {
     return this.repoRepository.find({
-      relations: ['tribu'],
+      relations: ['tribu', 'metrica'],
     });
   }
 

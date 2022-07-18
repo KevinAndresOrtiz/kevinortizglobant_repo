@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { RepositoriosService } from './repositorios.service';
 import { CreateRepositorioDto } from './dto/create-repositorio.dto';
@@ -21,8 +22,12 @@ export class RepositoriosController {
   }
 
   @Get()
-  findAll() {
-    return this.repositoriosService.findAll();
+  async findAll() {
+    const repositorios = await this.repositoriosService.findAll();
+    if (!repositorios.length) {
+      throw new NotFoundException(`repositories is empty`);
+    }
+    return repositorios;
   }
 
   @Get(':id')
