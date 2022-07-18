@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TribuService } from './tribu.service';
 import { CreateTribuDto } from './dto/create-tribu.dto';
 import { UpdateTribuDto } from './dto/update-tribu.dto';
@@ -17,14 +25,14 @@ export class TribuController {
     return this.tribuService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tribuService.findOne(+id);
+  @Get(':name')
+  findOne(@Param('name') name: string) {
+    return this.tribuService.findOne(name);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTribuDto: UpdateTribuDto) {
-    return this.tribuService.update(+id, updateTribuDto);
+  @Patch(':name')
+  update(@Param('name') name: string, @Body() updateTribuDto: UpdateTribuDto) {
+    return this.tribuService.update(name, updateTribuDto);
   }
 
   @Delete(':id')

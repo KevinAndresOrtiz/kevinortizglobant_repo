@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOrganizacionDto } from './dto/create-organizacion.dto';
@@ -11,14 +11,19 @@ export class OrganizacionService {
     @InjectRepository(Organizacion)
     private readonly organizacionRepository: Repository<Organizacion>,
   ) {}
-  async create(
-    createOrganizacionDto: CreateOrganizacionDto,
-  ): Promise<Organizacion> {
-    return await this.organizacionRepository.save(createOrganizacionDto);
+  create(createOrganizacionDto: CreateOrganizacionDto): Promise<Organizacion> {
+    const newOrganizacion = this.organizacionRepository.create(
+      createOrganizacionDto,
+    );
+    return this.organizacionRepository.save(newOrganizacion);
   }
 
   findAll(): Promise<Organizacion[]> {
     return this.organizacionRepository.find();
+  }
+
+  findById(id_organizacion: number): Promise<Organizacion> {
+    return this.organizacionRepository.findOneBy({ id_organizacion });
   }
 
   findOne(name: string): Promise<Organizacion> {
@@ -28,16 +33,16 @@ export class OrganizacionService {
   async update(
     name: string,
     updateOrganizacionDto: UpdateOrganizacionDto,
-  ): Promise<Organizacion | null> {
+  ): Promise<Organizacion> {
     const organizacion = await this.findOne(name);
     if (!organizacion) {
-      throw new Error(`Doesnt exist the row with name ${name}`);
+      throw new NotFoundException(`Doesnt exist the row with name ${name}`);
     }
-    await this.organizacionRepository.update({ name }, updateOrganizacionDto);
-    return organizacion;
+    this.organizacionRepository.merge(organizacion, updateOrganizacionDto);
+    return this.organizacionRepository.save(organizacion);
   }
 
-  async remove(id: number): Promise<any> {
+  remove(id: number): Promise<any> {
     return this.organizacionRepository.delete(id);
   }
 }

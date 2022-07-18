@@ -2,8 +2,8 @@ import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateOrganizacionDto {
   @IsNotEmpty()
-  name: string;
+  readonly name: string;
   @IsNotEmpty()
   @IsNumber()
-  status: number;
+  readonly status: number;
 }
