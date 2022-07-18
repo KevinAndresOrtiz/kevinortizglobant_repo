@@ -27,6 +27,10 @@ import { Metrica } from 'src/metricas/entities/metrica.entity';
             'options',
           ),
         },
+        migrations: ['src/databases/migrations/*.ts'],
+        cli: {
+          migrationsDir: 'src/databases/migrations',
+        },
       }),
     }),
   ],
