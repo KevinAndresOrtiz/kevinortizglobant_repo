@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { OrganizacionService } from './organizacion.service';
 import { CreateOrganizacionDto } from './dto/create-organizacion.dto';
 import { UpdateOrganizacionDto } from './dto/update-organizacion.dto';
@@ -8,27 +16,30 @@ export class OrganizacionController {
   constructor(private readonly organizacionService: OrganizacionService) {}
 
   @Post()
-  create(@Body() createOrganizacionDto: CreateOrganizacionDto) {
-    return this.organizacionService.create(createOrganizacionDto);
+  async create(@Body() createOrganizacionDto: CreateOrganizacionDto) {
+    return await this.organizacionService.create(createOrganizacionDto);
   }
 
   @Get()
-  findAll() {
-    return this.organizacionService.findAll();
+  async findAll() {
+    return await this.organizacionService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.organizacionService.findOne(+id);
+  @Get(':name')
+  async findOne(@Param('name') name: string) {
+    return await this.organizacionService.findOne(name);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrganizacionDto: UpdateOrganizacionDto) {
-    return this.organizacionService.update(+id, updateOrganizacionDto);
+  @Patch(':name')
+  async update(
+    @Param('name') name: string,
+    @Body() updateOrganizacionDto: UpdateOrganizacionDto,
+  ) {
+    return await this.organizacionService.update(name, updateOrganizacionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.organizacionService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.organizacionService.remove(+id);
   }
 }

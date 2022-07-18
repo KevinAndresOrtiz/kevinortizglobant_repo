@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Organizacion } from 'src/organizacion/entities/organizacion.entity';
+import { Repositorio } from 'src/repositorios/entities/repositorio.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 @Entity()
 export class Tribu {
   @PrimaryGeneratedColumn()
@@ -15,4 +22,8 @@ export class Tribu {
     nullable: false,
   })
   status: number;
+  @ManyToOne(() => Organizacion, (organizacion) => organizacion.tribus)
+  organizacion: Organizacion;
+  @OneToMany(() => Repositorio, (repositorio) => repositorio.tribu)
+  repositorios: Repositorio;
 }

@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateOrganizacionDto } from './dto/create-organizacion.dto';
 import { UpdateOrganizacionDto } from './dto/update-organizacion.dto';
+import { Organizacion } from './entities/organizacion.entity';
 
 @Injectable()
 export class OrganizacionService {
-  create(createOrganizacionDto: CreateOrganizacionDto) {
-    return 'This action adds a new organizacion';
+  constructor(
+    @InjectRepository(Organizacion)
+    private readonly organizacionRepository: Repository<Organizacion>,
+  ) {}
+  async create(
+    createOrganizacionDto: CreateOrganizacionDto,
+  ): Promise<Organizacion> {
+    return await this.organizacionRepository.save(createOrganizacionDto);
   }
 
-  findAll() {
-    return `This action returns all organizacion`;
+  findAll(): Promise<Organizacion[]> {
+    return this.organizacionRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} organizacion`;
+  findOne(name: string): Promise<Organizacion> {
+    return this.organizacionRepository.findOneBy({ name });
   }
 
-  update(id: number, updateOrganizacionDto: UpdateOrganizacionDto) {
-    return `This action updates a #${id} organizacion`;
+  async update(
+    name: string,
+    updateOrganizacionDto: UpdateOrganizacionDto,
+  ): Promise<Organizacion | null> {
+    const organizacion = await this.findOne(name);
+    if (!organizacion) {
+      throw new Error(`Doesnt exist the row with name ${name}`);
+    }
+    await this.organizacionRepository.update({ name }, updateOrganizacionDto);
+    return organizacion;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} organizacion`;
+  async remove(id: number): Promise<any> {
+    return this.organizacionRepository.delete(id);
   }
 }

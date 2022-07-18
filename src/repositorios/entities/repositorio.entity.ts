@@ -1,17 +1,19 @@
+import { Tribu } from 'src/tribu/entities/tribu.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  ManyToOne,
 } from 'typeorm';
 
-enum State {
-  E = 'Enable',
-  D = 'Disable',
+export enum State {
+  E = 'Enabled',
+  D = 'Disabled',
   A = 'Archived',
 }
 
-enum Status {
+export enum Status {
   A = 'Active',
   I = 'Inactive',
 }
@@ -27,19 +29,21 @@ export class Repositorio {
   })
   name: string;
   @Column({
-    type: 'enum',
-    enum: State,
-    default: State.E,
+    type: 'varchar',
+    length: 300,
+    default: 'Enable',
   })
-  state: State;
+  state: string;
   @Column({
-    type: 'enum',
-    enum: Status,
-    default: Status.A,
+    type: 'varchar',
+    length: 100,
+    default: 'Active',
   })
-  status: Status;
+  status: string;
   @CreateDateColumn({
     type: 'timestamptz',
   })
   create_time: Date;
+  @ManyToOne(() => Tribu, (tribu) => tribu.repositorios)
+  tribu: Tribu;
 }
