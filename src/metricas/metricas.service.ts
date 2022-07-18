@@ -15,9 +15,9 @@ export class MetricasService {
   ) {}
   async create(createMetricaDto: CreateMetricaDto) {
     const newMetric = this.metricaRepo.create(createMetricaDto);
-    if (newMetric.repositorioId) {
+    if (createMetricaDto.repositorioId) {
       const repositorio = await this.repositoryService.findById(
-        newMetric.repositorioId,
+        createMetricaDto.repositorioId,
       );
       newMetric.repositorio = repositorio;
     }

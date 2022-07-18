@@ -4,10 +4,10 @@ import { RepositoriosController } from './repositorios.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Repositorio } from './entities/repositorio.entity';
 import { Tribu } from 'src/tribu/entities/tribu.entity';
-import { TribuService } from 'src/tribu/tribu.service';
+import { TribuModule } from 'src/tribu/tribu.module';
 
 @Module({
-  imports: [TribuService, TypeOrmModule.forFeature([Repositorio, Tribu])],
+  imports: [TribuModule, TypeOrmModule.forFeature([Repositorio, Tribu])],
   controllers: [RepositoriosController],
   providers: [RepositoriosService],
   exports: [RepositoriosService],

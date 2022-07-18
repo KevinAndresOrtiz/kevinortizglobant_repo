@@ -16,9 +16,9 @@ export class TribuService {
   async create(createTribuDto: CreateTribuDto): Promise<Tribu> {
     try {
       const newTribu = this.tribuRespository.create(createTribuDto);
-      if (newTribu.organizacionId) {
+      if (createTribuDto.organizacionId) {
         const organizacion = await this.organizacionService.findById(
-          newTribu.organizacionId,
+          createTribuDto.organizacionId,
         );
         newTribu.organizacion = organizacion;
       }

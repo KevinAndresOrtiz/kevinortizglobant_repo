@@ -18,8 +18,11 @@ export class RepositoriosService {
   ): Promise<Repositorio> {
     try {
       const newRepositorio = this.repoRepository.create(createRepositorioDto);
-      if (newRepositorio.tribuId) {
-        const tribu = await this.tribuService.findById(newRepositorio.tribuId);
+      console.log(newRepositorio);
+      if (createRepositorioDto.tribuId) {
+        const tribu = await this.tribuService.findById(
+          createRepositorioDto.tribuId,
+        );
         newRepositorio.tribu = tribu;
       }
       return this.repoRepository.save(newRepositorio);

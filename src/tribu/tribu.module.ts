@@ -4,11 +4,11 @@ import { TribuController } from './tribu.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tribu } from './entities/tribu.entity';
 import { Organizacion } from 'src/organizacion/entities/organizacion.entity';
-import { OrganizacionService } from 'src/organizacion/organizacion.service';
+import { OrganizacionModule } from 'src/organizacion/organizacion.module';
 
 @Module({
   imports: [
-    OrganizacionService,
+    OrganizacionModule,
     TypeOrmModule.forFeature([Tribu, Organizacion]),
   ],
   controllers: [TribuController],

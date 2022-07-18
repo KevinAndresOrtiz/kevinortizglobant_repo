@@ -4,11 +4,11 @@ import { MetricasController } from './metricas.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Metrica } from './entities/metrica.entity';
 import { Repositorio } from 'src/repositorios/entities/repositorio.entity';
-import { RepositoriosService } from 'src/repositorios/repositorios.service';
+import { RepositoriosModule } from 'src/repositorios/repositorios.module';
 
 @Module({
   imports: [
-    RepositoriosService,
+    RepositoriosModule,
     TypeOrmModule.forFeature([Metrica, Repositorio]),
   ],
   controllers: [MetricasController],

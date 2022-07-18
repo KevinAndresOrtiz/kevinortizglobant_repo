@@ -27,7 +27,7 @@ export class RepositoriosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.repositoriosService.findOne(+id);
+    return this.repositoriosService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,7 +35,7 @@ export class RepositoriosController {
     @Param('id') id: string,
     @Body() updateRepositorioDto: UpdateRepositorioDto,
   ) {
-    return this.repositoriosService.update(+id, updateRepositorioDto);
+    return this.repositoriosService.update(id, updateRepositorioDto);
   }
 
   @Delete(':id')
