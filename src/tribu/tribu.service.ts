@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { async, firstValueFrom, map } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { stateVerification } from 'src/enum/dto.enum';
 import { OrganizacionService } from 'src/organizacion/organizacion.service';
 import { MoreThanOrEqual, Repository } from 'typeorm';
