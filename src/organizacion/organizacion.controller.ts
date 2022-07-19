@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { OrganizacionService } from './organizacion.service';
 import { CreateOrganizacionDto } from './dto/create-organizacion.dto';
 import { UpdateOrganizacionDto } from './dto/update-organizacion.dto';
@@ -17,14 +25,17 @@ export class OrganizacionController {
     return this.organizacionService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.organizacionService.findOne(+id);
+  @Get(':name')
+  findOne(@Param('name') name: string) {
+    return this.organizacionService.findOne(name);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrganizacionDto: UpdateOrganizacionDto) {
-    return this.organizacionService.update(+id, updateOrganizacionDto);
+  @Patch(':name')
+  update(
+    @Param('name') name: string,
+    @Body() updateOrganizacionDto: UpdateOrganizacionDto,
+  ) {
+    return this.organizacionService.update(name, updateOrganizacionDto);
   }
 
   @Delete(':id')

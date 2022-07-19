@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  BadRequestException,
+} from '@nestjs/common';
 import { MetricasService } from './metricas.service';
 import { CreateMetricaDto } from './dto/create-metrica.dto';
 import { UpdateMetricaDto } from './dto/update-metrica.dto';
@@ -8,8 +17,12 @@ export class MetricasController {
   constructor(private readonly metricasService: MetricasService) {}
 
   @Post()
-  create(@Body() createMetricaDto: CreateMetricaDto) {
-    return this.metricasService.create(createMetricaDto);
+  async create(@Body() createMetricaDto: CreateMetricaDto) {
+    try {
+      await this.metricasService.create(createMetricaDto);
+    } catch (err) {
+      throw new BadRequestException(`${err.message}`);
+    }
   }
 
   @Get()

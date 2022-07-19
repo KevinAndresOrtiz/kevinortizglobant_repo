@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  NotFoundException,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { TribuService } from './tribu.service';
 import { CreateTribuDto } from './dto/create-tribu.dto';
 import { UpdateTribuDto } from './dto/update-tribu.dto';
@@ -13,18 +24,50 @@ export class TribuController {
   }
 
   @Get()
-  findAll() {
-    return this.tribuService.findAll();
+  async findAll() {
+    const tribus = await this.tribuService.findAll();
+    if (!tribus.length) {
+      throw new NotFoundException(' empty results to get all tribus');
+    }
+    return tribus;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tribuService.findOne(+id);
+  @Get('download/:id')
+  async download(
+    @Res() res,
+    @Param('id') id: string,
+    @Query('coverage') coverage: string,
+    @Query('stateRepository') stateRepository: string,
+  ) {
+    const filename = await this.tribuService.generateReport(
+      +id,
+      stateRepository,
+      +coverage,
+    );
+    return res.download(filename);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTribuDto: UpdateTribuDto) {
-    return this.tribuService.update(+id, updateTribuDto);
+  @Get('id/:id')
+  async findbyIDTribu(
+    @Param('id') id: string,
+    @Query('coverage') coverage: string,
+    @Query('stateRepository') stateRepository: string,
+  ) {
+    return await this.tribuService.findByTribuID(
+      +id,
+      stateRepository,
+      +coverage,
+    );
+  }
+
+  @Get(':name')
+  findOne(@Param('name') name: string) {
+    return this.tribuService.findOne(name);
+  }
+
+  @Patch(':name')
+  update(@Param('name') name: string, @Body() updateTribuDto: UpdateTribuDto) {
+    return this.tribuService.update(name, updateTribuDto);
   }
 
   @Delete(':id')
