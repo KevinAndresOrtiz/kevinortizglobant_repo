@@ -49,4 +49,7 @@ $ npm run test:e2e
 
   
 ## Database
-Al momento que se descarga el proyecto, automaticamente un archivo de env se descarga con el proyecto con el acceso respectivo
+Al momento que se descarga el proyecto, automaticamente un archivo de env se descarga con el proyecto con el acceso respectivo.
+
+## Recomendaciones
+
