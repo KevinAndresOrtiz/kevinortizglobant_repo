@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TribuService } from 'src/tribu/tribu.service';
+import { TribuService } from '../tribu/tribu.service';
 import { Repository } from 'typeorm';
 import { CreateRepositorioDto } from './dto/create-repositorio.dto';
 import { UpdateRepositorioDto } from './dto/update-repositorio.dto';

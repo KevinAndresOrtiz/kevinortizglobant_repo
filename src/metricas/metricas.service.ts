@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RepositoriosService } from 'src/repositorios/repositorios.service';
+import { RepositoriosService } from '../repositorios/repositorios.service';
 import { Repository } from 'typeorm';
 import { CreateMetricaDto } from './dto/create-metrica.dto';
 import { UpdateMetricaDto } from './dto/update-metrica.dto';

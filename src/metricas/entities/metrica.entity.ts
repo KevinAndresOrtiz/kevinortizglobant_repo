@@ -1,4 +1,4 @@
-import { Repositorio } from 'src/repositorios/entities/repositorio.entity';
+import { Repositorio } from '../../repositorios/entities/repositorio.entity';
 import {
   Entity,
   Column,

@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { firstValueFrom, map } from 'rxjs';
-import { stateVerification } from 'src/enum/dto.enum';
-import { OrganizacionService } from 'src/organizacion/organizacion.service';
+import { stateVerification } from '../enum/dto.enum';
+import { OrganizacionService } from '../organizacion/organizacion.service';
 import { MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateTribuDto } from './dto/create-tribu.dto';
 import { UpdateTribuDto } from './dto/update-tribu.dto';

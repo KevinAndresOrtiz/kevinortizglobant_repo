@@ -3,8 +3,8 @@ import { RepositoriosService } from './repositorios.service';
 import { RepositoriosController } from './repositorios.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Repositorio } from './entities/repositorio.entity';
-import { Tribu } from 'src/tribu/entities/tribu.entity';
-import { TribuModule } from 'src/tribu/tribu.module';
+import { Tribu } from '../tribu/entities/tribu.entity';
+import { TribuModule } from '../tribu/tribu.module';
 
 @Module({
   imports: [TribuModule, TypeOrmModule.forFeature([Repositorio, Tribu])],
