@@ -12,8 +12,8 @@ import { MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateTribuDto } from './dto/create-tribu.dto';
 import { UpdateTribuDto } from './dto/update-tribu.dto';
 import { Tribu } from './entities/tribu.entity';
-import { json2csv } from 'json-2-csv';
 import { writeFileSync } from 'fs';
+import { json2csvAsync } from 'json-2-csv';
 
 @Injectable()
 export class TribuService {
@@ -61,14 +61,13 @@ export class TribuService {
 
   async generateReport(id: number, state?: string, coverageValue = 0) {
     const result = await this.findByTribuID(id, state, coverageValue);
-    json2csv(result, (err, csv) => {
-      if (err) {
-        throw new BadRequestException(`${err.message}`);
-      }
+    return await json2csvAsync(result).then(csv => {
+      // print CSV string
       console.log(csv);
+      // write CSV to a file
       writeFileSync('../report.csv', csv);
-    });
-    return '../report.csv';
+      return '../report.csv';
+  }).catch(err => console.log(err));
   }
 
   async findByTribuID(
