@@ -51,5 +51,7 @@ $ npm run test:e2e
 ## Database
 Al momento que se descarga el proyecto, automaticamente un archivo de env se descarga con el proyecto con el acceso respectivo.
 
-## Recomendaciones
+## Documentacion del Api
+Para acceder a la documentacion del Api se debe ingresar a-traves del endpoint localhost:3000/api
+
 
