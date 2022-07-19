@@ -1,9 +1,12 @@
+import { HttpService } from '@nestjs/axios';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { async, firstValueFrom, map } from 'rxjs';
+import { stateVerification } from 'src/enum/dto.enum';
 import { OrganizacionService } from 'src/organizacion/organizacion.service';
 import { MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateTribuDto } from './dto/create-tribu.dto';
@@ -16,6 +19,7 @@ export class TribuService {
     @InjectRepository(Tribu)
     private readonly tribuRespository: Repository<Tribu>,
     private readonly organizacionService: OrganizacionService,
+    private readonly httpService: HttpService,
   ) {}
   async create(createTribuDto: CreateTribuDto): Promise<Tribu> {
     try {
@@ -75,15 +79,68 @@ export class TribuService {
       },
       relations: ['organizacion', 'repositorios', 'repositorios.metrica'],
     });
-    console.log(tribuRespository);
     if (!tribuRespository.length) {
       throw new NotFoundException(
         'La tribu no tiene repositorios que cumplan con dicho criterio',
       );
     }
-    return tribuRespository;
+    return await this.formatResponse(tribuRespository);
   }
 
+  async formatResponse(tribus: Tribu[]) {
+    const repositories = [];
+    const repositoriesVerification = [];
+    tribus.forEach((val) => {
+      let repository = {};
+      val.repositorios.forEach((repo) => {
+        repository = {};
+        repository['id'] = repo.id_repository;
+        repository['name'] = repo.name;
+        repository['tribe'] = val.name;
+        repositoriesVerification.push(this.getResponseMock(repo.id_repository));
+        repository['organizacion'] = val.organizacion.name;
+        repository['coverage'] = repo.metrica.coverage;
+        repository['codeSmells'] = repo.metrica.code_smells;
+        repository['bugs'] = repo.metrica.bugs;
+        repository['vulnerabilities'] = repo.metrica.vulnerabilities;
+        repository['hotspots'] = repo.metrica.hotspot;
+        repository['state'] = repo.state;
+        repositories.push(repository);
+      });
+    });
+    await Promise.all(repositoriesVerification).then((data) => {
+      data.forEach((val) => {
+        const indexData = repositories.findIndex(
+          (element) => element.id == val.id,
+        );
+        repositories[indexData]['verificacionState'] = this.setVerificationState(+val.state);
+      });
+    });
+    return repositories;
+  }
+
+  setVerificationState(state: number) {
+    let _state = '';
+    if (state == stateVerification.APROBADO) {
+      _state = 'Aprobado';
+    } else if (state == stateVerification.VERIFICADO) {
+      _state = 'Verificado';
+    } else if (state == stateVerification.EN_ESPERA) {
+      _state = 'En espera';
+    } else {
+      _state = 'NON ASIGNED';
+    }
+    return _state;
+  }
+
+  getResponseMock(id: number) {
+    return firstValueFrom(
+      this.httpService.get(`http://localhost:3000/repository/${id}`).pipe(
+        map((response) => response.data),
+        map((data) => data),
+      ),
+    );
+  }
   async update(name: string, updateTribuDto: UpdateTribuDto): Promise<Tribu> {
     const tribu = await this.findOne(name);
     if (updateTribuDto.organizacionId) {

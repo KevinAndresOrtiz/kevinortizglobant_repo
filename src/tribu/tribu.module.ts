@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tribu } from './entities/tribu.entity';
 import { Organizacion } from 'src/organizacion/entities/organizacion.entity';
 import { OrganizacionModule } from 'src/organizacion/organizacion.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
     OrganizacionModule,
+    HttpModule,
     TypeOrmModule.forFeature([Tribu, Organizacion]),
   ],
   controllers: [TribuController],
