@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrganizacionService } from 'src/organizacion/organizacion.service';
-import { MoreThan, Repository } from 'typeorm';
+import { MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateTribuDto } from './dto/create-tribu.dto';
 import { UpdateTribuDto } from './dto/update-tribu.dto';
 import { Tribu } from './entities/tribu.entity';
@@ -52,23 +52,36 @@ export class TribuService {
   findById(id_tribe: number): Promise<Tribu> {
     return this.tribuRespository.findOneBy({ id_tribe });
   }
-  findByTribuID(
+  async findByTribuID(
     id: number,
     state?: string,
     coverageValue = 0,
   ): Promise<Tribu[]> {
-    return this.tribuRespository.find({
+    const existTribu = await this.tribuRespository.findAndCountBy({
+      id_tribe: id,
+    });
+    if (!existTribu[1]) {
+      throw new NotFoundException('La tribu no se encuentra registrada');
+    }
+    const tribuRespository = await this.tribuRespository.find({
       where: {
         id_tribe: id,
         repositorios: {
           state,
           metrica: {
-            coverage: MoreThan(coverageValue),
+            coverage: MoreThanOrEqual(coverageValue),
           },
         },
       },
       relations: ['organizacion', 'repositorios', 'repositorios.metrica'],
     });
+    console.log(tribuRespository);
+    if (!tribuRespository.length) {
+      throw new NotFoundException(
+        'La tribu no tiene repositorios que cumplan con dicho criterio',
+      );
+    }
+    return tribuRespository;
   }
 
   async update(name: string, updateTribuDto: UpdateTribuDto): Promise<Tribu> {

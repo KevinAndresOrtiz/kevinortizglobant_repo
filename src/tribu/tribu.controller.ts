@@ -32,12 +32,12 @@ export class TribuController {
   }
 
   @Get('id/:id')
-  findbyIDTribu(
+  async findbyIDTribu(
     @Param('id') id: string,
     @Query('coverage') coverage: string,
     @Query('stateRepository') stateRepository: string,
   ) {
-    return this.tribuService.findByTribuID(+id, stateRepository, +coverage);
+    return await this.tribuService.findByTribuID(+id, stateRepository, +coverage);
   }
 
   @Get(':name')
