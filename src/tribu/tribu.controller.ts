@@ -8,6 +8,7 @@ import {
   Delete,
   NotFoundException,
   Query,
+  Res,
 } from '@nestjs/common';
 import { TribuService } from './tribu.service';
 import { CreateTribuDto } from './dto/create-tribu.dto';
@@ -31,13 +32,32 @@ export class TribuController {
     return tribus;
   }
 
+  @Get('download/:id')
+  async download(
+    @Res() res,
+    @Param('id') id: string,
+    @Query('coverage') coverage: string,
+    @Query('stateRepository') stateRepository: string,
+  ) {
+    const filename = await this.tribuService.generateReport(
+      +id,
+      stateRepository,
+      +coverage,
+    );
+    return res.download(filename);
+  }
+
   @Get('id/:id')
   async findbyIDTribu(
     @Param('id') id: string,
     @Query('coverage') coverage: string,
     @Query('stateRepository') stateRepository: string,
   ) {
-    return await this.tribuService.findByTribuID(+id, stateRepository, +coverage);
+    return await this.tribuService.findByTribuID(
+      +id,
+      stateRepository,
+      +coverage,
+    );
   }
 
   @Get(':name')

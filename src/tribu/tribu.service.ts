@@ -12,6 +12,8 @@ import { MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateTribuDto } from './dto/create-tribu.dto';
 import { UpdateTribuDto } from './dto/update-tribu.dto';
 import { Tribu } from './entities/tribu.entity';
+import { json2csv } from 'json-2-csv';
+import { writeFileSync } from 'fs';
 
 @Injectable()
 export class TribuService {
@@ -56,6 +58,19 @@ export class TribuService {
   findById(id_tribe: number): Promise<Tribu> {
     return this.tribuRespository.findOneBy({ id_tribe });
   }
+
+  async generateReport(id: number, state?: string, coverageValue = 0) {
+    const result = await this.findByTribuID(id, state, coverageValue);
+    json2csv(result, (err, csv) => {
+      if (err) {
+        throw new BadRequestException(`${err.message}`);
+      }
+      console.log(csv);
+      writeFileSync('../report.csv', csv);
+    });
+    return '../report.csv';
+  }
+
   async findByTribuID(
     id: number,
     state?: string,
@@ -113,7 +128,8 @@ export class TribuService {
         const indexData = repositories.findIndex(
           (element) => element.id == val.id,
         );
-        repositories[indexData]['verificacionState'] = this.setVerificationState(+val.state);
+        repositories[indexData]['verificacionState'] =
+          this.setVerificationState(+val.state);
       });
     });
     return repositories;
