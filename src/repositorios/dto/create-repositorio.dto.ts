@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEnum,
   IsNotEmpty,
@@ -8,15 +9,19 @@ import {
 
 import { stateRepository, statusRepository } from '../../enum/dto.enum';
 export class CreateRepositorioDto {
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   name: string;
+  @ApiProperty()
   @IsNotEmpty()
   @IsEnum(stateRepository)
   state: stateRepository;
+  @ApiProperty()
   @IsNotEmpty()
   @IsEnum(statusRepository)
   status: statusRepository;
+  @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
   @IsPositive()
