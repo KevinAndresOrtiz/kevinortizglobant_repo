@@ -1,4 +1,4 @@
-import { Tribu } from 'src/tribu/entities/tribu.entity';
+import { Tribu } from '../../tribu/entities/tribu.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()

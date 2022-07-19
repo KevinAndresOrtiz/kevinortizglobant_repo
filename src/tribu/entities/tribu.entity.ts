@@ -1,5 +1,5 @@
-import { Organizacion } from 'src/organizacion/entities/organizacion.entity';
-import { Repositorio } from 'src/repositorios/entities/repositorio.entity';
+import { Organizacion } from '../../organizacion/entities/organizacion.entity';
+import { Repositorio } from '../../repositorios/entities/repositorio.entity';
 import {
   Entity,
   Column,

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrganizacionService } from 'src/organizacion/organizacion.service';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { CreateTribuDto } from './dto/create-tribu.dto';
 import { UpdateTribuDto } from './dto/update-tribu.dto';
 import { Tribu } from './entities/tribu.entity';
@@ -52,10 +52,20 @@ export class TribuService {
   findById(id_tribe: number): Promise<Tribu> {
     return this.tribuRespository.findOneBy({ id_tribe });
   }
-  findByTribuID(id: number): Promise<Tribu[]> {
+  findByTribuID(
+    id: number,
+    state?: string,
+    coverageValue = 0,
+  ): Promise<Tribu[]> {
     return this.tribuRespository.find({
       where: {
         id_tribe: id,
+        repositorios: {
+          state,
+          metrica: {
+            coverage: MoreThan(coverageValue),
+          },
+        },
       },
       relations: ['organizacion', 'repositorios', 'repositorios.metrica'],
     });

@@ -1,5 +1,5 @@
-import { Metrica } from 'src/metricas/entities/metrica.entity';
-import { Tribu } from 'src/tribu/entities/tribu.entity';
+import { Metrica } from '../../metricas/entities/metrica.entity';
+import { Tribu } from '../../tribu/entities/tribu.entity';
 import {
   Entity,
   Column,

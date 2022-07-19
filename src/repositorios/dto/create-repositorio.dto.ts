@@ -1,23 +1,22 @@
 import {
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsPositive,
   IsString,
-  MaxLength,
 } from 'class-validator';
 
+import { stateRepository, statusRepository } from '../../enum/dto.enum';
 export class CreateRepositorioDto {
   @IsNotEmpty()
   @IsString()
   name: string;
   @IsNotEmpty()
-  @IsString()
-  @MaxLength(1)
-  state: string;
+  @IsEnum(stateRepository)
+  state: stateRepository;
   @IsNotEmpty()
-  @IsString()
-  @MaxLength(1)
-  status: string;
+  @IsEnum(statusRepository)
+  status: statusRepository;
   @IsNotEmpty()
   @IsNumber()
   @IsPositive()

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { TribuService } from './tribu.service';
 import { CreateTribuDto } from './dto/create-tribu.dto';
@@ -31,8 +32,12 @@ export class TribuController {
   }
 
   @Get('id/:id')
-  findbyIDTribu(@Param('id') id: string) {
-    return this.tribuService.findByTribuID(+id);
+  findbyIDTribu(
+    @Param('id') id: string,
+    @Query('coverage') coverage: string,
+    @Query('stateRepository') stateRepository: string,
+  ) {
+    return this.tribuService.findByTribuID(+id, stateRepository, +coverage);
   }
 
   @Get(':name')
