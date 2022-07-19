@@ -9,19 +9,28 @@ import {
 
 import { stateRepository, statusRepository } from '../../enum/dto.enum';
 export class CreateRepositorioDto {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Repository name associated with an organization',
+  })
   @IsNotEmpty()
   @IsString()
   name: string;
-  @ApiProperty()
+  @ApiProperty({
+    description:
+      'Indicate the state of a repository like Enabled, Disabled, Archive',
+  })
   @IsNotEmpty()
   @IsEnum(stateRepository)
   state: stateRepository;
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Indicate the repository status like Active , Inactive',
+  })
   @IsNotEmpty()
   @IsEnum(statusRepository)
   status: statusRepository;
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Foreign Key of the Tribu Table',
+  })
   @IsNotEmpty()
   @IsNumber()
   @IsPositive()
